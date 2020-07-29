@@ -54,6 +54,19 @@ def gen_intervals(note):
                   [up_fifth, root, up_third],
                   [up_fifth, up_third, root],
 
+
+                  [up_third, down_fifth, root],
+                  [up_third, root, down_fifth],
+                  [down_fifth, root, up_third],
+                  [down_fifth, up_third, root],
+
+
+                  [down_third, up_fifth, root],
+                  [down_third, root, up_fifth],
+                  [up_fifth, root, down_third],
+                  [up_fifth, down_third, root],
+
+                  
                   [up_third, up_fifth, up_root],
                   [up_third, up_root, up_fifth],
                   [up_fifth, up_root, up_third],
@@ -70,7 +83,6 @@ def gen_intervals(note):
                   [down_third, down_root, down_fifth],
                   [down_fifth, down_root, down_third],
                   [down_fifth, down_third, down_root],                  
-
                   
     ]
     
