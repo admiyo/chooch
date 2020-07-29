@@ -9,8 +9,8 @@ garzone.ps: garzone.abc
 	yaps garzone.abc
 
 
-garzone.abc: abcgen.py
-	./abcgen.py
+garzone.abc: chooch.py
+	./chooch.py
 
 clean:
 	rm -r garzone*
