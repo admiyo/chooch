@@ -24,7 +24,8 @@ notes = ["A,", "^A,", "B,","^B,",
 octave = 12
 intervals = [4, 7, 1]
 direction = [-1, 1]
-old_note = -1
+
+accidents = {}
 
 
 def constrain(note):
@@ -53,17 +54,21 @@ def gen_intervals(note):
     tones = [note, note2, note3]
     return tones
 
-def print_note(note):
-    global old_note
-    
-    if note == old_note:
-        import pdb; pdb.set_trace()
-
+def print_note(note):    
     note = constrain(note)
-    old_note = note
-    return notes[note]
+    calculated = notes[note]
+    letter = calculated[0]
+    if calculated[0]  == "^":
+        letter = calculated[1] 
+        accidents[letter] = "^"
+    elif accidents.get(letter) == "^":
+        accidents[letter] = ""
+        calculated = "=" + calculated
+    
+    return calculated
 
 def gen_file():
+    global accidents
     third = 4
     fifth = 7
     octave = 12
@@ -74,6 +79,7 @@ def gen_file():
     while(count < 64):
         if 0 == count % 8:
             body += "|"
+            accidents = {}
         elif 0 == count % 4:
             body += " "
         intervals = gen_intervals(note)
