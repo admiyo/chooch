@@ -30,32 +30,61 @@ accidents = {}
 
 def constrain(note):
     if note >= len(notes):
+        print("dropping\n")
         note -= octave
     if note < 0:
+        print("raising\n")
         note += octave
     return note
 
 def gen_intervals(note):
     #Add these values to the root to get the chord tone
     root = 0
-    third = 4
-    fifth = 7
-    inversions = [[root, third, fifth],
-                  [third, fifth, root],
-                  [fifth, root, third]]
-    inversion = randrange(3)
-
-    find_root = constrain(note - inversions[inversion][0])
+    up_third = 4
+    up_fifth = 7
+    up_root = octave
+    down_root = -octave
+    down_fifth = -5
+    down_third = -8
     
-    note2 = constrain(find_root + inversions[inversion][1]
-                      + randrange(-1, 0)  *  octave)
-    note3 = constrain(find_root + inversions[inversion][2]
-                      + randrange(-1, 0)  * octave)
+    inversions = [[root, up_third, up_fifth],
+                  [root, up_fifth, up_third],
+                  [up_third, up_fifth, root],
+                  [up_third, root, up_fifth],
+                  [up_fifth, root, up_third],
+                  [up_fifth, up_third, root],
+
+                  [up_third, up_fifth, up_root],
+                  [up_third, up_root, up_fifth],
+                  [up_fifth, up_root, up_third],
+                  [up_fifth, up_third, up_root],
+                  
+                  [root, down_third, down_fifth],
+                  [root, down_fifth, down_third],
+                  [down_third, down_fifth, root],
+                  [down_third, root, down_fifth],
+                  [down_fifth, root, down_third],
+                  [down_fifth, down_third, root],
+
+                  [down_third, down_fifth, down_root],
+                  [down_third, down_root, down_fifth],
+                  [down_fifth, down_root, down_third],
+                  [down_fifth, down_third, down_root],                  
+
+                  
+    ]
+    
+    inversion = randrange(len(inversions))
+#+ randrange(-1, 0)  *  octave
+    find_root = constrain(note - inversions[inversion][0])    
+    note2 = constrain(find_root + inversions[inversion][1])
+    note3 = constrain(find_root + inversions[inversion][2])
     tones = [note, note2, note3]
     return tones
 
-def print_note(note):    
-    note = constrain(note)
+def print_note(note, count):
+
+    global accidents
     calculated = notes[note]
     letter = calculated[0]
     if calculated[0]  == "^":
@@ -64,34 +93,33 @@ def print_note(note):
     elif accidents.get(letter) == "^":
         accidents[letter] = ""
         calculated = "=" + calculated
-    
+
+    if 0 == count % 8:
+        calculated = "|" + calculated
+        accidents = {}
+    elif 0 == count % 4:
+        calculated = " " + calculated
+        
     return calculated
 
 def gen_file():
     global accidents
-    third = 4
-    fifth = 7
-    octave = 12
     note = 18
     body = ""
-
     count = 0
     while(count < 64):
-        if 0 == count % 8:
-            body += "|"
-            accidents = {}
-        elif 0 == count % 4:
-            body += " "
         intervals = gen_intervals(note)
         for i in intervals:
-            note = constrain(i)
+            body += print_note(i, count)
             count += 1
-            body += print_note(note)
-        # generate one note ove the chromatic run here, and the second note
-        # becomes the basis for the next triad 
-        note = constrain(note + choice(direction))
-        count += 1
-        body += print_note(note)
+        # generate 1-3 chromatic notes.  The last chromatic note
+        # becomes the basis for the next triad
+        num_chroms =  randrange(2)
+
+        for i in range(num_chroms):
+            note = constrain(note + choice(direction))
+            body += print_note(note, count)
+            count += 1
         note = constrain(note + choice(direction))
     body += "|"
             
