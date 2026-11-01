@@ -1,0 +1,8 @@
+[package]
+name = "rust-pw-midi"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+jack = "0.13" # Idiomatic and completely safe MIDI/Audio graph handler
+
