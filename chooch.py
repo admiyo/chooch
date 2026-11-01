@@ -9,6 +9,7 @@ M:4/4
 C:Automated
 K:C
 L: 1/8
+%%MIDI program 66
 """
 
 notes = ["A,", "^A,", "B,","^B,",
@@ -93,13 +94,13 @@ def print_note(note, count):
     elif accidents.get(letter) == "^":
         accidents[letter] = ""
         calculated = "=" + calculated
-
+    calculated = f".{calculated}"        
     if 0 == count % 8:
         calculated = "|" + calculated
         accidents = {}
     elif 0 == count % 4:
         calculated = " " + calculated
-        
+
     return calculated
 
 def gen_file():
@@ -107,7 +108,7 @@ def gen_file():
     note = 18
     body = ""
     count = 0
-    while(count < 64):
+    while(count < 62):
         intervals = gen_intervals(note)
         for i in intervals:
             body += print_note(i, count)
